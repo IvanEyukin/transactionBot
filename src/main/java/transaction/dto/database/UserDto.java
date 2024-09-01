@@ -3,6 +3,8 @@ package transaction.dto.database;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
 @Entity
 @Table(name = "users")
@@ -10,6 +12,8 @@ public class UserDto {
     @Id
     @Column(name = "id")
     private long id;
+    @Column(name = "time_create", insertable = false, updatable = false)
+    Timestamp timeCreate;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")

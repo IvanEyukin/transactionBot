@@ -1,5 +1,6 @@
 CREATE TABLE public.users (
 	id integer NOT NULL,
+	time_create timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	first_name text NULL,
 	last_name text NULL,
 	user_name text NULL,
@@ -16,6 +17,7 @@ CREATE TABLE public.accounts (
 
 CREATE TABLE public.transactions (
 	guid uuid NOT NULL,
+	time_create timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	user_src integer NOT NULL,
 	user_dst integer NOT NULL,
 	account integer NOT NULL,
