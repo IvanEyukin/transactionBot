@@ -1,0 +1,50 @@
+#version: "3.9"
+version: "3.7"
+
+volumes:
+  bot_database_data:
+  bot_cache_data:
+
+
+networks:
+  telegram-net:
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:14.8-alpine3.18
+    environment:
+      POSTGRES_DB: "botbd"
+      POSTGRES_USER: "bot"
+      POSTGRES_PASSWORD: "^3d}WGx5HK"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ../2. Init Database:/docker-entrypoint-initdb.d
+      - bot_database_data:/var/lib/postgresql/data
+    networks:
+      - telegram-net
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - bot_cache_data:/data
+    networks:
+      - telegram-net
+    hostname: redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+#  transaction:
+#    container_name: transaction
+#    image:  ivaneyukin/transaction:0.0.1
+#    networks:
+#      - telegram-net
+#    restart: always
