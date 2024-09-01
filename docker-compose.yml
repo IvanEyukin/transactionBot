@@ -1,10 +1,8 @@
-#version: "3.9"
 version: "3.7"
 
 volumes:
   bot_database_data:
   bot_cache_data:
-
 
 networks:
   telegram-net:
@@ -42,9 +40,9 @@ services:
       - "6379:6379"
     restart: always
 
-#  transaction:
-#    container_name: transaction
-#    image:  ivaneyukin/transaction:0.0.1
-#    networks:
-#      - telegram-net
-#    restart: always
+  transaction:
+    container_name: transaction
+    image:  ivaneyukin/transaction:0.0.1
+    networks:
+      - telegram-net
+    restart: always
