@@ -12,6 +12,7 @@ public interface UserMapper {
     @Mapping(target = "userInfoHasSave", ignore = true)
     User userMapper(Chat chat);
 
+    @Mapping(target = "timeCreate", ignore = true)
     @Mapping(target = "isAdmin", ignore = true)
     UserDto userDtoMapper(User user);
 

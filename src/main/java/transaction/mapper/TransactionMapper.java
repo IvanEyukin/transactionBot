@@ -10,11 +10,13 @@ import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface TransactionMapper {
+    @Mapping(target = "timeCreate", ignore = true)
     TransactionDto transactionMapper(Transaction transaction);
 
     Transaction transactionDtoMapper(TransactionDto transactionDto);
 
     @Mapping(target = "guid", qualifiedByName = "mapGuid", source = "transactionDto.guid")
+    @Mapping(target = "timeCreate", ignore = true)
     @Mapping(target = "userSrc", source = "transactionDto.userDst")
     @Mapping(target = "userDst", source = "transactionDto.userSrc")
     TransactionDto transactionNewMapper(TransactionDto transactionDto);
