@@ -62,7 +62,9 @@ public class MessageHandler {
             }
             case WaitingName -> {
                 chat = handlerName.saveUserName(chat);
-                state.updateState(Status.WaitingUserCommand);
+                if (!chat.getBotAnswer().getMessage().equals(Sender.USER_NAME_ERROR) && !chat.getBotAnswer().getMessage().equals(Sender.USER_NAME_INVALID)) {
+                    state.updateState(Status.WaitingUserCommand);
+                }
             }
             case Balance -> {
                 chat.setBotAnswer(handlerBalance.getBalanceList(chat));

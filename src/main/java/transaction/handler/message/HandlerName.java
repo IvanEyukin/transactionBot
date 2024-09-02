@@ -24,12 +24,24 @@ public class HandlerName {
     }
 
     public Chat saveUserName(@NotNull Chat chat) {
-        chat.getUser().setUserName(chat.getMessage().getMessage());
-        UserDto userDto = userMapper.userDtoMapper(chat.getUser());
-        postgresService.saveUser(userDto);
-
         BotAnswer botAnswer = new BotAnswer();
-        botAnswer.setMessage(String.format(Sender.USER_NAME_SAVE, chat.getUser().getUserName()));
+
+        if (!chat.getMessage().getMessage().isBlank()) {
+            String userName = chat.getMessage().getMessage();
+            UserDto userInDatabase = postgresService.searchUser(userName);
+
+            if (userInDatabase == null) {
+                chat.getUser().setUserName(userName);
+                UserDto userDto = userMapper.userDtoMapper(chat.getUser());
+                postgresService.saveUser(userDto);
+                botAnswer.setMessage(String.format(Sender.USER_NAME_SAVE, userName));
+            } else {
+                botAnswer.setMessage(Sender.USER_NAME_ERROR);
+            }
+        } else {
+            botAnswer.setMessage(Sender.USER_NAME_INVALID);
+        }
+
         chat.setBotAnswer(botAnswer);
         return chat;
     }

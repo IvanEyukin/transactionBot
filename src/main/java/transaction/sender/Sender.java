@@ -21,6 +21,16 @@ public class Sender {
             Чем я могу тебе помочь?
             """;
 
+    public final static String USER_NAME_ERROR = """
+            К сожалению это имя занято другим путешественником.
+            Выбери другое имя.
+            """;
+
+    public final static String USER_NAME_INVALID = """
+            Не уверен, что смогу тебя так называть.
+            Будь добр, введи другое имя.
+            """;
+
     public final static String USER_NAME_UPDATE = """
             О, ты решил изменить имя?
             И как же мне теперь тебя называть?
