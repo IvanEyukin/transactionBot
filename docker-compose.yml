@@ -42,7 +42,7 @@ services:
 
   transaction:
     container_name: transaction
-    image:  ivaneyukin/transaction:0.0.2
+    image:  ivaneyukin/transaction:0.0.3
     networks:
       - telegram-net
     restart: always
