@@ -5,6 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import transaction.dto.bot.BotAnswer;
 import transaction.dto.bot.Chat;
 
 @Mapper(componentModel = "spring", uses = {UserMapper.class, MessageMapper.class, CallbackMapper.class})
@@ -19,6 +20,9 @@ public interface ChatMapper {
     @Mapping(target = "state", ignore = true)
     @Mapping(target = "botAnswer", ignore = true)
     Chat chatMapper(Update update);
+
+    @Mapping(target = "botAnswer", qualifiedByName = "mapBotAnswer", source = "botAnswer")
+    Chat chatRepositoryMapper(Chat chat);
 
     @Mapping(target = "id", source = "chatRepository.id")
     @Mapping(target = "hasMessage", source = "chat.hasMessage")
@@ -48,5 +52,16 @@ public interface ChatMapper {
     @Named("mapHasCallback")
     default Boolean mapHasCallback(@NotNull Update update) {
         return update.hasCallbackQuery();
+    }
+
+    @Named("mapBotAnswer")
+    default BotAnswer mapBotAnswer(@NotNull BotAnswer botAnswer) {
+        if (botAnswer.getKeyboard() != null) {
+            botAnswer.setKeyboard(null);
+            botAnswer.setMessageHasKeyboard(true);
+        } else {
+            botAnswer.setMessageHasKeyboard(false);
+        }
+        return botAnswer;
     }
 }

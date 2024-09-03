@@ -21,7 +21,7 @@ public class RedisService {
     private final ChatMapper chatMapper;
 
     public void setChatRepository(Chat chat) {
-        chatRepository.save(chat);
+        chatRepository.save(chatMapper.chatRepositoryMapper(chat));
         log.debug("Save redis request: {}", chat);
     }
 

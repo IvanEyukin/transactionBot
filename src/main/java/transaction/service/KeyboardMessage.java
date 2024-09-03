@@ -1,5 +1,6 @@
 package transaction.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -12,7 +13,7 @@ import java.util.List;
 @Service
 public class KeyboardMessage {
 
-    private InlineKeyboardButton createInlineKeyboardButton(InlineKeyboard inlineKeyboard) {
+    private InlineKeyboardButton createInlineKeyboardButton(@NotNull InlineKeyboard inlineKeyboard) {
         return InlineKeyboardButton
                 .builder()
                 .text(inlineKeyboard.getMessage())
@@ -30,7 +31,7 @@ public class KeyboardMessage {
         return new InlineKeyboardMarkup(keyboard);
     }
 
-    public InlineKeyboardMarkup createinlineKeyboardMarkup(List<InlineKeyboard> inlineKeyboardList) {
+    public InlineKeyboardMarkup createinlineKeyboardMarkup(@NotNull List<InlineKeyboard> inlineKeyboardList) {
         List<InlineKeyboardRow> keyboard = new ArrayList<>();
         for (InlineKeyboard inlineKeyboard : inlineKeyboardList) {
             InlineKeyboardRow row = new InlineKeyboardRow();
