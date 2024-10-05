@@ -2,6 +2,7 @@ package transaction.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import transaction.dto.bot.Chat;
@@ -33,6 +34,12 @@ public class TransactionService {
     @NotNull
     private Boolean checkMessageHasNumber(String message) {
         return NumberUtils.isCreatable(message);
+    }
+
+    @NotNull
+    @Contract(pure = true)
+    private Boolean checkMessageHasPoint(@NotNull String message) {
+        return message.contains(".");
     }
 
     @NotNull
@@ -69,7 +76,7 @@ public class TransactionService {
     }
 
     public NumberInvalid checkNumber(String message, BigDecimal balance) {
-        if (checkMessageHasNumber(message)) {
+        if (checkMessageHasNumber(message) && !checkMessageHasPoint(message)) {
             BigDecimal sum = new BigDecimal(message);
             if (checkNumberIsPositive(sum)) {
                 if (checkBalanceIsSufficient(balance, sum)) {
