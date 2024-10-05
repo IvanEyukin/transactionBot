@@ -9,6 +9,7 @@ public enum Status {
     WaitingTransactionUser,
     WaitingTransactionAccount,
     WaitingTransactionBalance,
+    WaitingTransactionComment,
     WaitingTransactionConfirm,
     WaitingUserCommand,
     AdminMenu,

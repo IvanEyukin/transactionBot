@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import transaction.dto.bot.BotAnswer;
 import transaction.dto.bot.Chat;
 import transaction.dto.database.AccountDto;
 import transaction.dto.database.AdminNotification;
@@ -33,7 +32,11 @@ public class NotificationService {
 
     public void notification(Chat chat) {
         notificationUserSrc(chat, Sender.NOTIFICATION_USER_SRC);
-        notificationUserDst(chat, Sender.NOTIFICATION_USER_DST);
+        if (chat.getTransaction().getComment() != null) {
+            notificationUserDst(chat, Sender.NOTIFICATION_USER_DST_WITH_COMMENT);
+        } else {
+            notificationUserDst(chat, Sender.NOTIFICATION_USER_DST);
+        }
         notificationUserAdmin(chat, "Create");
     }
 
@@ -71,15 +74,28 @@ public class NotificationService {
         messageService.sendMessage(chat.getTransaction().getUserSrc(), text);
     }
 
-    private void notificationUserDst(@NotNull Chat chat, String message) {
+    private void notificationUserDst(@NotNull Chat chat, @NotNull String message) {
         UserDto userDto = postgresService.getUser(chat.getTransaction().getUserSrc());
         AccountDto accountDto = postgresService.getAccount(chat.getTransaction().getAccount());
-        String text = String.format(message,
-                chat.getTransaction().getSum(),
-                accountDto.getTranslate(),
-                userDto.getUserName(),
-                handlerBalance.getBalance(chat.getTransaction().getUserDst(), chat.getTransaction().getAccount())
-        );
+        String text;
+
+        if (message.equals(Sender.NOTIFICATION_USER_DST_WITH_COMMENT)) {
+            text = String.format(message,
+                    chat.getTransaction().getSum(),
+                    accountDto.getTranslate(),
+                    userDto.getUserName(),
+                    chat.getTransaction().getComment(),
+                    handlerBalance.getBalance(chat.getTransaction().getUserDst(), chat.getTransaction().getAccount())
+            );
+        } else {
+            text = String.format(message,
+                    chat.getTransaction().getSum(),
+                    accountDto.getTranslate(),
+                    userDto.getUserName(),
+                    handlerBalance.getBalance(chat.getTransaction().getUserDst(), chat.getTransaction().getAccount())
+            );
+        }
+
         messageService.sendMessage(chat.getTransaction().getUserDst(), text);
     }
 

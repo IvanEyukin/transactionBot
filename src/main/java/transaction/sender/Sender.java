@@ -80,6 +80,10 @@ public class Sender {
             Укажи другую сумму.
             """;
 
+    public final static String TRANSACTION_COMMENT= """
+            Добавь комментарий к переводу.
+            """;
+
     public final static String TRANSACTION_CONFIRM = """
             Выполнить перевод %s, со счета %s, на сумму %s?
             """;
@@ -102,6 +106,13 @@ public class Sender {
 
     public final static String NOTIFICATION_USER_DST = """
             Вам поступили средства в размере %s на счет %s, от %s.
+            %s
+            #Поступление
+            """;
+
+    public final static String NOTIFICATION_USER_DST_WITH_COMMENT = """
+            Вам поступили средства в размере %s на счет %s, от %s.
+            Комментарий: %s
             %s
             #Поступление
             """;

@@ -22,6 +22,7 @@ CREATE TABLE public.transactions (
 	user_dst integer NOT NULL,
 	account integer NOT NULL,
 	sum decimal NOT NULL,
+	comment text NULL,
 	CONSTRAINT transactions_pk PRIMARY KEY (guid),
 	CONSTRAINT transactions_users_src_fk FOREIGN KEY (user_src) REFERENCES public.users(id) ON DELETE CASCADE,
 	CONSTRAINT transactions_users_dst_fk FOREIGN KEY (user_dst) REFERENCES public.users(id) ON DELETE CASCADE,
@@ -111,3 +112,6 @@ INSERT INTO users (id, first_name, last_name, user_name) VALUES
 (7, '7', '7', '7'),
 (8, '8', '8', '8'),
 (9, '9', '9', '9')
+
+--Поставка 05.10.2024
+ALTER TABLE public.transactions ADD "comment" text NULL;

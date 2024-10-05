@@ -64,13 +64,29 @@ public class HandlerTransaction {
             case ZERO -> botAnswer.setMessage(Sender.TRANSACTION_SUM_ERROR_ZERO);
             case VALID -> {
                 chat.getTransaction().setSum(new BigDecimal(chat.getMessage().getMessage()));
-                UserDto userDto = postgresService.getUser(chat.getTransaction().getUserDst());
-                AccountDto accountDto = postgresService.getAccount(chat.getTransaction().getAccount());
-                botAnswer = answerConfirm(userDto.getUserName(), accountDto.getTranslate(), chat.getTransaction().getSum());
+                botAnswer = answerComment();
             }
         }
 
         chat.setBotAnswer(botAnswer);
+        return chat;
+    }
+
+    public Chat setComment(@NotNull Chat chat) {
+        chat.getTransaction().setComment(chat.getMessage().getMessage());
+
+        UserDto userDto = postgresService.getUser(chat.getTransaction().getUserDst());
+        AccountDto accountDto = postgresService.getAccount(chat.getTransaction().getAccount());
+
+        chat.setBotAnswer(answerConfirm(userDto.getUserName(), accountDto.getTranslate(), chat.getTransaction().getSum()));
+
+        return chat;
+    }
+
+    public Chat  answerConfirm(@NotNull Chat chat) {
+        UserDto userDto = postgresService.getUser(chat.getTransaction().getUserDst());
+        AccountDto accountDto = postgresService.getAccount(chat.getTransaction().getAccount());
+        chat.setBotAnswer(answerConfirm(userDto.getUserName(), accountDto.getTranslate(), chat.getTransaction().getSum()));
         return chat;
     }
 
@@ -110,6 +126,15 @@ public class HandlerTransaction {
         } else {
             botAnswer.setMessage(Sender.TRANSACTION_ACCOUNT_ZERO);
         }
+        return botAnswer;
+    }
+
+    @NotNull
+    private BotAnswer answerComment() {
+        BotAnswer botAnswer = new BotAnswer();
+        botAnswer.setMessage(Sender.TRANSACTION_COMMENT);
+        botAnswer.setKeyboard(keyboardMessage.createinlineKeyboardMarkup(new InlineKeyboard("Не оставлять комментарий","TransactionCommentFalse")));
+
         return botAnswer;
     }
 

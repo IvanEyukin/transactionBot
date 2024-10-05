@@ -83,10 +83,14 @@ public class MessageHandler {
                 }
             }
             case WaitingTransactionBalance -> {
-                chat = handlerTransaction.setBalance((chat));
+                chat = handlerTransaction.setBalance(chat);
                 if (chat.getTransaction().getSum() != null) {
-                    state.updateState(Status.WaitingTransactionConfirm);
+                    state.updateState(Status.WaitingTransactionComment);
                 }
+            }
+            case WaitingTransactionComment -> {
+                chat = handlerTransaction.setComment(chat);
+                state.updateState(Status.WaitingTransactionConfirm);
             }
             case Error -> {
                 BotAnswer botAnswer = new BotAnswer();

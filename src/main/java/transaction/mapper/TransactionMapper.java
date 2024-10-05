@@ -19,6 +19,7 @@ public interface TransactionMapper {
     @Mapping(target = "timeCreate", ignore = true)
     @Mapping(target = "userSrc", source = "transactionDto.userDst")
     @Mapping(target = "userDst", source = "transactionDto.userSrc")
+    @Mapping(target = "comment", constant = "Транзакция отменена администратором")
     TransactionDto transactionNewMapper(TransactionDto transactionDto);
 
     @Named("mapGuid")

@@ -11,4 +11,5 @@ public class Transaction {
     private long userSrc;
     private long userDst;
     private BigDecimal sum;
+    private String comment;
 }

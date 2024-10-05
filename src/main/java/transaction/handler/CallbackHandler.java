@@ -54,6 +54,10 @@ public class CallbackHandler {
                         state.updateState(Status.WaitingTransactionBalance);
                     }
                 }
+                case WaitingTransactionComment -> {
+                    chat = handlerTransaction.answerConfirm(chat);
+                    state.updateState(Status.WaitingTransactionConfirm);
+                }
                 case WaitingTransactionConfirm -> {
                     if (chat.getCallback().getCallbackData().equals("Send")) {
                         handlerTransaction.saveTransaction(chat);

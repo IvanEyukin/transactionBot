@@ -26,4 +26,6 @@ public class TransactionDto {
     long userDst;
     @Column(name = "sum")
     BigDecimal sum;
+    @Column(name = "comment")
+    String comment;
 }
