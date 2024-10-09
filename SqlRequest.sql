@@ -111,7 +111,7 @@ INSERT INTO accounts (name, translate) VALUES
 ('second', 'второй'),
 ('third', 'третий');
 
-CREATE VIEW users_transactions AS (
+CREATE OR REPLACE VIEW VIEW users_transactions AS (
     SELECT DISTINCT
         u.id,
         u.user_name,
@@ -119,6 +119,8 @@ CREATE VIEW users_transactions AS (
     FROM
         transactions t
         JOIN users u ON u.id = t.user_dst
+    WHERE
+        u.user_name IS NOT null
     ORDER BY
         u.user_name
 )
