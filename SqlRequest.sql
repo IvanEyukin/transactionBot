@@ -1,5 +1,5 @@
 CREATE TABLE public.users (
-	id integer NOT NULL,
+	id BIGINT NOT NULL,
 	time_create timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	first_name text NULL,
 	last_name text NULL,
@@ -18,8 +18,8 @@ CREATE TABLE public.accounts (
 CREATE TABLE public.transactions (
 	guid uuid NOT NULL,
 	time_create timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	user_src integer NOT NULL,
-	user_dst integer NOT NULL,
+	user_src BIGINT NOT NULL,
+	user_dst BIGINT NOT NULL,
 	account integer NOT NULL,
 	sum decimal NOT NULL,
 	comment text NULL,
@@ -30,7 +30,7 @@ CREATE TABLE public.transactions (
 );
 
 CREATE TABLE public.balance (
-	user_id integer NOT NULL,
+	user_id BIGINT NOT NULL,
 	account integer NOT NULL,
 	balance decimal NOT NULL,
 	CONSTRAINT balance_users_fk FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE,
@@ -111,7 +111,7 @@ INSERT INTO accounts (name, translate) VALUES
 ('second', 'второй'),
 ('third', 'третий');
 
-CREATE OR REPLACE VIEW VIEW users_transactions AS (
+CREATE OR REPLACE VIEW users_transactions AS (
     SELECT DISTINCT
         u.id,
         u.user_name,
@@ -137,29 +137,3 @@ INSERT INTO users (id, first_name, last_name, user_name) VALUES
 (7, '7', '7', '7'),
 (8, '8', '8', '8'),
 (9, '9', '9', '9')
-
---Поставка 05.10.2024
-ALTER TABLE public.transactions ADD "comment" text NULL;
-
-CREATE FUNCTION insert_account_in_balance() RETURNS trigger AS $$
-    DECLARE
-        users RECORD;
-	BEGIN
-	    FOR users IN
-	        SELECT
-	            id
-	        FROM
-	            users
-        LOOP
-            INSERT INTO balance (user_id, account, balance)
-            VALUES (users.id, NEW.id, 0);
-        END LOOP;
-	RETURN NEW;
-	END;
-$$ LANGUAGE 'plpgsql';
-
-CREATE TRIGGER accounts_insert
-	AFTER INSERT
-	ON public.accounts
-	FOR EACH ROW
-	EXECUTE PROCEDURE public.insert_account_in_balance();
