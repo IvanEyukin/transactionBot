@@ -126,6 +126,25 @@ CREATE OR REPLACE VIEW users_transactions AS (
         u.user_name
 )
 
+CREATE OR REPLACE VIEW report_users_transactions AS (
+    SELECT
+        t.time_create + INTERVAL '03:00' AS "Время транзакции",
+        u.user_name                      AS "Ник отправителя",
+        u2.user_name                     AS "Ник получателя",
+        a."translate"                    AS "Счет",
+        t.sum                            AS "Сумма",
+        t."comment"                      AS "Комментарий"
+    FROM
+        transactions t
+        LEFT JOIN users u ON u.id = t.user_src
+        LEFT JOIN users u2 ON u2.id = t.user_dst
+        LEFT JOIN accounts a ON a.id  = t.account
+    ORDER BY
+        t.time_create DESC
+    LIMIT
+        20
+)
+
 --Тестовые данные
 
 INSERT INTO users (id, first_name, last_name, user_name) VALUES
