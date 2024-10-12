@@ -33,6 +33,7 @@ CREATE TABLE public.balance (
 	user_id BIGINT NOT NULL,
 	account integer NOT NULL,
 	balance decimal NOT NULL,
+	CONSTRAINT balance_pk PRIMARY KEY (user_id, account);
 	CONSTRAINT balance_users_fk FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE,
 	CONSTRAINT balance_accounts_fk FOREIGN KEY (account) REFERENCES public.accounts(id) ON DELETE CASCADE
 );

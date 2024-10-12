@@ -57,3 +57,5 @@ CREATE OR REPLACE VIEW users_transactions AS (
     ORDER BY
         u.user_name
 )
+
+ALTER TABLE public.balance ADD CONSTRAINT balance_pk PRIMARY KEY (user_id, account);
